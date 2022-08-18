@@ -1,43 +1,89 @@
-    window.Buffer = window.Buffer || require('buffer').Buffer;  //used for token encoding
-
-import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
+window.Buffer = window.Buffer || require('buffer').Buffer;
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Token } from '@angular/compiler';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { AUTH_CONFIG } from './auth_config';
-import { TokenEndpointResponse } from '@auth0/auth0-spa-js';
-
+import {
+  AuthorizationNotifier,
+  BaseTokenRequestHandler,
+  RedirectRequestHandler,
+  Requestor,
+  StringMap,
+  TokenResponse,
+} from '@openid/appauth';
+import { BehaviorSubject } from 'rxjs';
+import { environment } from '../../../environments/environment';
+import { BearerToken } from './bearer_token';
 
 const LS_TOKEN_RESPONSE = 'auth.service.token_response';
+const AUTH_URL = 'https://accounts.spotify.com';
 
 @Injectable()
 export class AuthService {
 
-  private _tokenResponses: BehaviorSubject<TokenEndpointResponse | null> = new BehaviorSubject<TokenEndpointResponse | null>(null);
+  private _tokenResponses: BehaviorSubject<BearerToken | null> = new BehaviorSubject<BearerToken | null>(null);
 
-  constructor(private http: HttpClient){
-      this._tokenResponses.subscribe((token: TokenEndpointResponse | null) => {
-        if (token) {
-            window.localStorage.setItem(LS_TOKEN_RESPONSE, JSON.stringify(token.access_token));
-        } else {
-            window.localStorage.removeItem(LS_TOKEN_RESPONSE);
-        }
+  constructor(private http: HttpClient, private requestor: Requestor) {
+    this._tokenResponses.subscribe((token: BearerToken | null) => {
+      console.log('token before if '+ token);
+      if (token) {
+        console.log('token in if' + JSON.stringify(token.access_token));
+        window.localStorage.setItem(LS_TOKEN_RESPONSE, JSON.stringify(token.access_token));
+      }
     });
   }
 
-
   login() {
-      const body= 'grant_type=client_credentials'
+    const request = {
+        client_id: environment.client_id,
+        redirect_uri: environment.redirect_uri,
+        scope: environment.scope,
+        response_type: 'code',
+    };
+    this.performAuthorizationRequest(request);
+  }
 
-      this.http.post(AUTH_CONFIG.auth_url, body, {
-          headers: new HttpHeaders({
-              'Authorization': 'Basic ' + Buffer.from(AUTH_CONFIG.client_id + ':' + AUTH_CONFIG.client_secret).toString('base64'),
-              'Content-Type': 'application/x-www-form-urlencoded;'
-          }),
+  performAuthorizationRequest(request: any) {
+    return window.open(AUTH_URL + '/authorize?' + new URLSearchParams(request).toString());
+  }
+
+  completeAuthorizationRequest(code: string): any {
+    console.log('Authorization request complete ');
+    if (code) {
+
+      // use the code to make the token request.
+      const extras: StringMap = {};
+      if (environment.client_secret) {
+        extras['client_secret'] = environment.client_secret;
       }
-      // any for unknown entity
-      ).subscribe((data: any) => {
-        console.log(data.access_token)
-        return this._tokenResponses?.next(data.access_token)
-      });
+      const tokenRequest = {
+          client_id: environment.client_id,
+          redirect_uri: environment.redirect_uri,
+          grant_type: 'client_credentials',
+          code: code,
+      };
+
+      let headers = this.createAuthorizationHeader();
+
+      this.http.post(AUTH_URL + '/api/token', new URLSearchParams(tokenRequest), {headers: headers,})
+        .subscribe((tokenResponse: any) => {
+            console.log('received token response ', tokenResponse);
+            this._tokenResponses.next(tokenResponse);
+
+            // window.localStorage.setItem(LS_TOKEN_RESPONSE, JSON.stringify(tokenResponse));
+        });
+    }
+  }
+
+  createAuthorizationHeader(): HttpHeaders {
+    let headers = new HttpHeaders()
+      .set(
+        'Authorization',
+        'Basic ' +
+          Buffer.from(
+            environment.client_id + ':' + environment.client_secret
+          ).toString('base64')
+      )
+      .set('Content-Type', 'application/x-www-form-urlencoded');
+    return headers;
   }
 }
