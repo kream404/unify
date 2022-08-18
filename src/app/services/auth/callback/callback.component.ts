@@ -26,12 +26,10 @@ export class CallbackComponent implements OnInit {
     ngOnInit() {
       const code = this.route.snapshot.queryParamMap.get('code');
       if(code){
-        this.authorizationService.completeAuthorizationRequest(code);
-      }
+        this.authorizationService.completeAuthorizationRequest(code)?.then((tokenResponse) => {
+          console.log('recieved token response: ' + tokenResponse);
+          this.router.navigate(['home']);
+      });
+    }
   }
-
-  test(){
-    console.log(window.location.hash.toString());
-  }
-
 }

@@ -7,12 +7,14 @@ import { AppComponent } from './app.component';
 import { HeroComponent } from './modules/hero/hero.component';
 import { AuthService } from './services/auth/auth.service';
 import { CallbackComponent } from './services/auth/callback/callback.component';
+import { HomeComponent } from './modules/home/home.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeroComponent,
-    CallbackComponent
+    CallbackComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,

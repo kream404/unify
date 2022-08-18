@@ -6,7 +6,6 @@ export interface AuthorizationConfig {
   scope?:         string;
   state?:         string;
   extras?:        any;
-
 }
 
 export interface GeneralEnvironmentInfo {
