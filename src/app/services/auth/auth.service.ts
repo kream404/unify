@@ -12,7 +12,7 @@ import {
 } from '@openid/appauth';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { BearerToken } from './bearer_token';
+import { BearerToken } from '../../model/bearer_token';
 
 const LS_TOKEN_RESPONSE = 'auth.service.token_response';
 const AUTH_URL = 'https://accounts.spotify.com';
