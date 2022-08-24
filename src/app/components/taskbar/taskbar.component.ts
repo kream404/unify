@@ -20,7 +20,6 @@ export class TaskbarComponent implements OnInit {
   ngOnInit(): void {
     this.auth.authorised().subscribe((auth: Boolean | null) => {
         this.authorised = auth;
-        console.log('AUTH STATUS: ' + this.authorised);
       });
   }
 }

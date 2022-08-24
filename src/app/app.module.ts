@@ -15,6 +15,7 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatListModule} from '@angular/material/list';
 import {MatIconModule} from '@angular/material/icon';
+import { SpotifyService } from './services/spotify_service/spotify-service.service';
 
 
 
@@ -39,6 +40,7 @@ import {MatIconModule} from '@angular/material/icon';
   providers: [
       AuthService,
       { provide: Requestor, useValue: new FetchRequestor()},
+      SpotifyService
   ],
   bootstrap: [AppComponent]
 })
