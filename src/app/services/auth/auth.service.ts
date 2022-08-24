@@ -2,6 +2,7 @@ window.Buffer = window.Buffer || require("buffer").Buffer;
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Token } from "@angular/compiler";
 import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
 import {
   AuthorizationNotifier,
   BaseTokenRequestHandler,
@@ -10,7 +11,7 @@ import {
   StringMap,
   TokenResponse,
 } from "@openid/appauth";
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, distinctUntilChanged, Observable } from "rxjs";
 import { environment } from "../../../environments/environment";
 import { BearerToken } from "../../model/bearer_token";
 
@@ -19,9 +20,11 @@ const AUTH_URL = "https://accounts.spotify.com";
 
 @Injectable()
 export class AuthService {
+  
   private _tokenResponses: BehaviorSubject<BearerToken | null> = new BehaviorSubject<BearerToken | null>(null);
+  private _authorised: BehaviorSubject<Boolean | null> = new BehaviorSubject<Boolean | null >(false);
 
-  constructor(private http: HttpClient, private requestor: Requestor) {
+  constructor(private http: HttpClient, private requestor: Requestor, public router: Router) {
     this._tokenResponses.subscribe((token: BearerToken | null) => {
       if(token) {
         window.localStorage.setItem(LS_TOKEN_RESPONSE, JSON.stringify(token.access_token));
@@ -64,6 +67,7 @@ export class AuthService {
 
         this.http.post(AUTH_URL + "/api/token", new URLSearchParams(tokenRequest), {headers: headers,}).subscribe((tokenResponse: any) => {
             this._tokenResponses.next(tokenResponse);
+            this._authorised.next(true);
             resolve(tokenResponse);
           });
       } else {
@@ -76,5 +80,16 @@ export class AuthService {
       .set("Authorization", "Basic " + Buffer.from(environment.client_id + ":" + environment.client_secret).toString("base64"))
       .set("Content-Type", "application/x-www-form-urlencoded");
     return headers;
+  }
+
+  public authorised(): Observable<Boolean | null> {
+    return this._authorised.asObservable().pipe(distinctUntilChanged());
+  }
+
+  // TODO: the navigation should be handled by an auth guard, will implement later, this is fine for now
+  public logout() {
+    this._authorised.next(false);
+    this._tokenResponses.next(null);
+    this.router.navigate([''])
   }
 }

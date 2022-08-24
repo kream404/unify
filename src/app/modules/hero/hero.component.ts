@@ -5,7 +5,7 @@ import { AuthService } from '../../services/auth/auth.service'
   selector: 'app-hero',
   templateUrl: './hero.component.html',
   styleUrls: ['./hero.component.css'],
-  providers: [ AuthService]
+  providers: [ AuthService ]
 })
 export class HeroComponent implements OnInit {
 

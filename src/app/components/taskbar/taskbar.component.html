@@ -1,0 +1,12 @@
+<mat-toolbar color="primary" id="container">
+    <mat-toolbar-row>
+      <span class="menu-spacer"></span>
+      <div *ngIf='!authorised'>
+        <a mat-raised-button (click)="auth.login()" target="_blank"> Login </a>  
+      </div>
+      <div *ngIf='authorised'>
+        <a mat-raised-button (click)="auth.logout()" target="_blank"> Logout </a>  
+      </div>
+    </mat-toolbar-row>
+  </mat-toolbar>
+

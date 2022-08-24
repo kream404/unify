@@ -8,18 +8,33 @@ import { HeroComponent } from './modules/hero/hero.component';
 import { AuthService } from './services/auth/auth.service';
 import { CallbackComponent } from './services/auth/callback/callback.component';
 import { HomeComponent } from './modules/home/home.component';
+import { TaskbarComponent } from './components/taskbar/taskbar.component';
+import { MatButtonModule} from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatListModule} from '@angular/material/list';
+import {MatIconModule} from '@angular/material/icon';
+
+
 
 @NgModule({
   declarations: [
     AppComponent,
     HeroComponent,
     CallbackComponent,
-    HomeComponent
+    HomeComponent,
+    TaskbarComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    MatToolbarModule,
+    MatSidenavModule,
+    MatListModule,
+    MatButtonModule,
+    MatIconModule
   ],
   providers: [
       AuthService,
