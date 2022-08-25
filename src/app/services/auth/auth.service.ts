@@ -19,7 +19,7 @@ const LS_TOKEN_RESPONSE = 'auth.service.access_token';
 const LS_AUTH_STATUS = 'auth.service.auth_status';
 
 const AUTH_URL = 'https://accounts.spotify.com';
-const AUTH_SCOPE = '&scope=user-read-private%20user-read-email&state=&show_dialog=true';
+const AUTH_SCOPE = '&scope=user-read-private%20user-read-email%20streaming&state=&show_dialog=true';
 @Injectable()
 export class AuthService {
   

@@ -10,12 +10,11 @@ import { CallbackComponent } from './services/auth/callback/callback.component';
 import { HomeComponent } from './modules/home/home.component';
 import { TaskbarComponent } from './components/taskbar/taskbar.component';
 import { MatButtonModule} from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatListModule} from '@angular/material/list';
 import {MatIconModule} from '@angular/material/icon';
-import { SpotifyService } from './services/spotify_service/spotify-service.service';
+
 
 
 
@@ -40,7 +39,6 @@ import { SpotifyService } from './services/spotify_service/spotify-service.servi
   providers: [
       AuthService,
       { provide: Requestor, useValue: new FetchRequestor()},
-      SpotifyService
   ],
   bootstrap: [AppComponent]
 })

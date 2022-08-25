@@ -1,8 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, OnInit } from '@angular/core';
-import { BearerToken } from 'src/app/model/bearer_token';
 import { UserInfo } from 'src/app/model/user_info';
-import { AuthService } from '../auth/auth.service';
+import { AuthService } from '../../auth/auth.service';
 
 const URL = 'https://api.spotify.com/v1'
 
@@ -10,7 +9,7 @@ const URL = 'https://api.spotify.com/v1'
   providedIn: 'root'
 })
 
-export class SpotifyService {
+export class SpotifyApiService {
 
   access_token: string | null | undefined;
 
@@ -18,16 +17,17 @@ export class SpotifyService {
 
   }
 
-  public userInfo(): Promise<UserInfo> {
+  public async userInfo(): Promise<UserInfo | null> {
 
     return new Promise((resolve, reject) => {
     let headers = this.createRequestHeader();
     
     this.http.get(URL + "/me", {headers: headers,}).subscribe((userInfo: any) => {
-      console.log(JSON.stringify(userInfo));
-      resolve(userInfo);
+      console.log('returning user info  ' + JSON.stringify(userInfo))
+      return resolve(userInfo);
     });
-  });
+      return null;
+    });
   }
 
   createRequestHeader(): HttpHeaders {
