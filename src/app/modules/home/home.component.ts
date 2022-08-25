@@ -1,8 +1,8 @@
-import { Component, OnInit, ɵɵsetComponentScope } from '@angular/core';
-import { BearerToken } from 'src/app/model/bearer_token';
+import { Component, OnInit } from '@angular/core';
 import { UserInfo } from 'src/app/model/user_info';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { SpotifyService } from 'src/app/services/spotify_service/spotify-service.service';
+import { SpotifyApiService } from 'src/app/services/spotify_service/spotify-api/spotify-api.service';
+import { SpotifyPlayerSDK } from 'src/app/services/spotify_service/spotify-player/spotify-player.sdk';
 
 @Component({
   selector: 'app-home',
@@ -13,17 +13,16 @@ export class HomeComponent implements OnInit {
 
   public authorised: boolean;
   public user!: UserInfo;
-  constructor(public spotify: SpotifyService, public auth: AuthService) { 
+  constructor(public spotify_player: SpotifyPlayerSDK, public spotify: SpotifyApiService, public auth: AuthService) { 
     this.authorised = false;
 
   }
 
-  ngOnInit(): void {
-      this.spotify.userInfo().then((userInfo : any) => {
-        this.user = userInfo;
-        console.log('USER ' + JSON.stringify(this.user.followers));
+  ngOnInit() {
+    this.spotify_player.addPlayerSDK();
+      this.spotify.userInfo().then((data) => {
+        this.user = data!;
       });
-      
     }
   }
 

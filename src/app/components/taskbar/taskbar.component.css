@@ -7,3 +7,8 @@
     border: black;
     border-width: 5px;
 }
+
+.mat-raised-button{
+    background-color: #424242;
+    color: whitesmoke;
+}
