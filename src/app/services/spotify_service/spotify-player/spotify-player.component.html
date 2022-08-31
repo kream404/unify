@@ -1,0 +1,6 @@
+<button mat-raised-button  (click)="next()"><<</button>
+<button mat-raised-button *ngIf="!playing" (click)="play()">Play</button>
+<button mat-raised-button *ngIf="playing" (click)="pause()">Pause</button>
+<button mat-raised-button  (click)="next()">>></button>
+
+

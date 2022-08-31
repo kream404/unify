@@ -9,11 +9,13 @@ import { AuthService } from './services/auth/auth.service';
 import { CallbackComponent } from './services/auth/callback/callback.component';
 import { HomeComponent } from './modules/home/home.component';
 import { TaskbarComponent } from './components/taskbar/taskbar.component';
-import { MatButtonModule} from '@angular/material/button';
-import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatListModule} from '@angular/material/list';
-import {MatIconModule} from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
+import { SpotifyPlayerComponent } from './services/spotify_service/spotify-player/spotify-player.component';
 
 
 
@@ -24,7 +26,8 @@ import {MatIconModule} from '@angular/material/icon';
     HeroComponent,
     CallbackComponent,
     HomeComponent,
-    TaskbarComponent
+    TaskbarComponent,
+    SpotifyPlayerComponent
   ],
   imports: [
     BrowserModule,
@@ -34,11 +37,13 @@ import {MatIconModule} from '@angular/material/icon';
     MatSidenavModule,
     MatListModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    MatCardModule
   ],
   providers: [
       AuthService,
       { provide: Requestor, useValue: new FetchRequestor()},
+      SpotifyPlayerComponent
   ],
   bootstrap: [AppComponent]
 })

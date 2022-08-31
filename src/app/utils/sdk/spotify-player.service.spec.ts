@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { SpotifyPlayerSDK } from './spotify-player.sdk';
+import { SpotifyPlayerSDK } from './spotify.sdk';
 
 describe('SpotifyPlayerService', () => {
   let service: SpotifyPlayerSDK;

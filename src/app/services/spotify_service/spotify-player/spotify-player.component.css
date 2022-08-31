@@ -1,0 +1,11 @@
+#player{
+    /* border: solid;
+    border-color:black;
+    border-width: 5px; */
+    color: white;
+    height: 800px;
+}
+
+button{
+    margin-left: 10px;
+}

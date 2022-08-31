@@ -17,7 +17,12 @@ html, body {
 
     /* disables vertical scroll, want it to be a single clean page */
     overflow-y: hidden;
-  }
+    color: #FFFFFF
+}
 
+  .mat-raised-button{
+    background-color: #424242;
+    color: whitesmoke;
+}
 
 
