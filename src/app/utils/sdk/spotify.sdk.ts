@@ -1,7 +1,9 @@
 ///  <reference types="@types/spotify-web-playback-sdk"/>
 import { Injectable, NgZone, OnInit } from '@angular/core';
+import { BehaviorSubject, Observable, distinctUntilChanged  } from 'rxjs';
 import { SpotifyApiService } from '../../services/spotify_service/spotify-api/spotify-api.service';
 
+const LS_DEVICE_ID = 'spotify.sdk.device_id';
 @Injectable({
   providedIn: 'root'
 })
@@ -9,14 +11,12 @@ export class SpotifyPlayerSDK {
 
   private player: Spotify.Player;
   private state: Spotify.PlaybackState;
+  public ready: BehaviorSubject<Boolean> = new BehaviorSubject<Boolean>(false);
+
+  constructor() {}
   
-  constructor() {
-    this.addPlayerSDK().then((state) => {
-    });
-  }
-  
-  addPlayerSDK(): Promise<void> {
-    return new Promise((resolve, reject) => {
+  public async addPlayerSDK(): Promise<void> {
+    return new Promise(() => {
 
       const script = document.createElement('script');
       script.src = 'https://sdk.scdn.co/spotify-player.js';
@@ -42,7 +42,8 @@ export class SpotifyPlayerSDK {
         // Ready
         this.player.on('ready', (data) => {
           console.log('Ready with Device ID', data.device_id);
-          document.querySelector('iframe[src="https://sdk.scdn.co/embedded/index.html"]');
+          window.localStorage.setItem(LS_DEVICE_ID, data.device_id);
+          this.ready.next(true);
         });
 
         this.player.addListener('player_state_changed', (state) => {
@@ -70,26 +71,22 @@ export class SpotifyPlayerSDK {
             console.error(message);
         });
 
-        this.player.connect().then((data) => {
+        this.player.connect().then((_data) => {
           console.log('player connected')
         });
-        resolve();
       });
     });
   }
   
+  // has to be 'connected' via spotify app - need to make this automatic
   public playerState(){
-    console.log('in plater stater')
       this.player.getCurrentState().then((state) => {
         console.log(state);
       });
   }
 
   public play(){
-    this.player.togglePlay().then((data) => {
-      console.log('in play')
-      console.log(data);
-    });
+    this.player.togglePlay();
   }
 
   public next(){
@@ -100,4 +97,8 @@ export class SpotifyPlayerSDK {
     this.player.previousTrack();
   }
 
+  public isReady(): Observable<Boolean> {
+    console.log(this.ready.asObservable().pipe(distinctUntilChanged()));
+    return this.ready.asObservable().pipe(distinctUntilChanged());
+  }
 }

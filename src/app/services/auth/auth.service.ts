@@ -19,7 +19,7 @@ const LS_TOKEN_RESPONSE = 'auth.service.access_token';
 const LS_AUTH_STATUS = 'auth.service.auth_status';
 
 const AUTH_URL = 'https://accounts.spotify.com';
-const AUTH_SCOPE = '&scope=user-read-private%20user-read-email%20streaming&state=&show_dialog=true';
+const AUTH_SCOPE = '&scope=user-read-private%20user-read-email%20user-read-playback-state%20user-modify-playback-state%20streaming&state=&show_dialog=true';
 @Injectable()
 export class AuthService {
   
@@ -52,7 +52,7 @@ export class AuthService {
 
   completeAuthorizationRequest(code: string): Promise<BearerToken> | null {
     return new Promise((resolve, reject) => {
-      console.log('Authorization request complete ');
+      console.info('Authorization request complete ');
       if(code) {
         // use the code to make the token request.
         const extras: StringMap = {};
@@ -69,7 +69,6 @@ export class AuthService {
         let headers = this.createAuthorizationHeader();
 
         this.http.post(AUTH_URL + '/api/token', new URLSearchParams(tokenRequest), {headers: headers,}).subscribe((tokenResponse: any) => {
-            console.log('TOKEN RESP: ' + JSON.stringify(tokenResponse));
             this._tokenResponses.next(tokenResponse);
             this._authorised.next(true);
             resolve(tokenResponse);
@@ -98,7 +97,6 @@ export class AuthService {
 
   public bearerToken(): string {
     let token = JSON.parse(window.localStorage.getItem('auth.service.access_token')!);
-    console.log('token ' + token);
     return token.access_token;
   }
 
