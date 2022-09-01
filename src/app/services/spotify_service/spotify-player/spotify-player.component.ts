@@ -9,7 +9,7 @@ import { SpotifyApiService } from '../spotify-api/spotify-api.service';
   styleUrls: ['./spotify-player.component.css']
 })
 
-// this will eventually be THE player
+// this will eventually be THE player - should maybe extend sdk?
 export class SpotifyPlayerComponent implements OnInit {
   
   playing: boolean;
@@ -30,12 +30,12 @@ export class SpotifyPlayerComponent implements OnInit {
   }
 
   public play(){
-    this.sdk.play();
+    this.sdk.resume();
     this.playing = true;
   }
 
   public pause(){
-    this.sdk.play();
+    this.sdk.pause();
     this.playing = false;
   }
 
@@ -49,5 +49,9 @@ export class SpotifyPlayerComponent implements OnInit {
 
   public playerState(){
     this.sdk.playerState();
+  }
+
+  public getVolume(){
+    this.sdk.getVolume();
   }
 }

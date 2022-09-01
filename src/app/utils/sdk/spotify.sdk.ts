@@ -1,7 +1,6 @@
 ///  <reference types="@types/spotify-web-playback-sdk"/>
 import { Injectable, NgZone, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable, distinctUntilChanged  } from 'rxjs';
-import { SpotifyApiService } from '../../services/spotify_service/spotify-api/spotify-api.service';
 
 const LS_DEVICE_ID = 'spotify.sdk.device_id';
 @Injectable({
@@ -85,8 +84,12 @@ export class SpotifyPlayerSDK {
       });
   }
 
-  public play(){
-    this.player.togglePlay();
+  public resume(){
+    this.player.resume();
+  }
+
+  public pause(){
+    this.player.pause();
   }
 
   public next(){
@@ -95,6 +98,19 @@ export class SpotifyPlayerSDK {
 
   public previous(){
     this.player.previousTrack();
+  }
+
+  public getVolume(){
+    this.player.getVolume().then((volume: number) => {
+      let volume_percentage = volume * 100;
+      console.log(`The volume of the player is ${volume_percentage}%`);
+    });
+  }
+
+  public setVolume(gain: number){
+    this.player.setVolume(gain).then(() => {
+      console.log(`The volume of the player is ` + this.getVolume());
+    });
   }
 
   public isReady(): Observable<Boolean> {
