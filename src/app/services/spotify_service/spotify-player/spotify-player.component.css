@@ -1,0 +1,24 @@
+#container{
+    /* border: solid;
+    border-color:black;
+    border-width: 5px; */
+    color: white;
+    height: 800px;
+    width: 100%;
+    height: 30%;
+    margin-top: 710px;
+    
+}
+
+button{
+    margin-left: 10px;
+}
+
+.mat-card{
+    background: #673ab7;
+}
+
+#volume_controls{
+    margin-right: 10px;
+    margin-left: 70%;
+}

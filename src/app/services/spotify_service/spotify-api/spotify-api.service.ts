@@ -13,9 +13,7 @@ export class SpotifyApiService {
 
   access_token: string | null | undefined;
 
-  constructor(public auth: AuthService, private http: HttpClient) {
-
-  }
+  constructor(public auth: AuthService, private http: HttpClient) {}
 
   public async userInfo(): Promise<UserInfo | null> {
 
@@ -23,8 +21,27 @@ export class SpotifyApiService {
     let headers = this.createRequestHeader();
     
     this.http.get(URL + "/me", {headers: headers,}).subscribe((userInfo: any) => {
-      console.log('returning user info  ' + JSON.stringify(userInfo))
       return resolve(userInfo);
+    });
+      return null;
+    });
+  }
+
+  // transfer playback to new player instance
+  public async transferPlayback(): Promise<UserInfo | null> {
+    let device_id = window.localStorage.getItem('spotify.sdk.device_id');
+    
+    const request = {
+      device_ids: [
+          device_id
+      ]
+    }
+
+    return new Promise((resolve, reject) => {
+    let headers = this.createRequestHeader();
+    
+    this.http.put(URL + "/me/player", request, {headers: headers,}).subscribe((data: any) => {
+      return resolve(data);
     });
       return null;
     });
@@ -32,7 +49,6 @@ export class SpotifyApiService {
 
   createRequestHeader(): HttpHeaders {
     this.access_token = this.auth.bearerToken();
-    console.log('TOKEN: ' + this.access_token)
     let headers = new HttpHeaders()
       .set("Authorization", "Bearer " + this.access_token)
       .set("Content-Type", "application/json");

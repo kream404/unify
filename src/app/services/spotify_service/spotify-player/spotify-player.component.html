@@ -1,0 +1,16 @@
+<div id="container">
+    <mat-card>
+    <div id="player_controls">
+        <button mat-raised-button  (click)="next()"><<</button>
+        <button mat-raised-button *ngIf="!playing" (click)="play()">Play</button>
+        <button mat-raised-button *ngIf="playing" (click)="pause()">Pause</button>
+        <button mat-raised-button  (click)="next()">>></button>
+        <button mat-raised-button  (click)="playerState()">State</button>
+        <button mat-raised-button  (click)="getVolume()">Volume</button>
+        <mat-slider aria-label="unit(s)" id="volume_controls">Volume</mat-slider>
+
+    </div>  
+    </mat-card>
+</div>
+
+
