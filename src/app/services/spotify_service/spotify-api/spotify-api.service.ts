@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, OnInit } from '@angular/core';
+import { delay, retry } from 'rxjs';
 import { UserInfo } from 'src/app/model/user_info';
 import { AuthService } from '../../auth/auth.service';
 
@@ -28,7 +29,7 @@ export class SpotifyApiService {
   }
 
   // transfer playback to new player instance
-  public async transferPlayback(): Promise<UserInfo | null> {
+  public async transferPlayback(): Promise<void> {
     let device_id = window.localStorage.getItem('spotify.sdk.device_id');
     
     const request = {
@@ -36,6 +37,8 @@ export class SpotifyApiService {
           device_id
       ]
     }
+
+    console.log(JSON.stringify(request));
 
     return new Promise((resolve, reject) => {
     let headers = this.createRequestHeader();
@@ -49,6 +52,7 @@ export class SpotifyApiService {
 
   createRequestHeader(): HttpHeaders {
     this.access_token = this.auth.bearerToken();
+    console.log('token ' + this.access_token  )
     let headers = new HttpHeaders()
       .set("Authorization", "Bearer " + this.access_token)
       .set("Content-Type", "application/json");

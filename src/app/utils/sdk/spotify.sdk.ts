@@ -1,5 +1,5 @@
 ///  <reference types="@types/spotify-web-playback-sdk"/>
-import { Injectable, NgZone, OnInit } from '@angular/core';
+import { Injectable, NgZone, OnInit } from "@angular/core";
 import { BehaviorSubject, Observable, distinctUntilChanged  } from 'rxjs';
 
 const LS_DEVICE_ID = 'spotify.sdk.device_id';
