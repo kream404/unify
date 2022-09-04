@@ -1,5 +1,5 @@
 import { ThisReceiver } from '@angular/compiler';
-import { Component, OnInit } from '@angular/core';
+import { Component, Injector, OnInit } from '@angular/core';
 import { SpotifyPlayerSDK } from '../../../utils/sdk/spotify.sdk';
 import { SpotifyApiService } from '../spotify-api/spotify-api.service';
 
@@ -13,20 +13,22 @@ import { SpotifyApiService } from '../spotify-api/spotify-api.service';
 export class SpotifyPlayerComponent implements OnInit {
   
   playing: boolean;
+  sdk: SpotifyPlayerSDK;
+  
+  constructor(public injector: Injector, public spotify_api: SpotifyApiService) { 
+    this.sdk = this.injector.get(SpotifyPlayerSDK);
+  }
 
-  constructor(public sdk: SpotifyPlayerSDK, public spotify_api: SpotifyApiService) { 
-    this.sdk.ready.subscribe((ready) => {
-      console.log('READY ' + ready);
+  async ngOnInit(): Promise<void> { 
+    this.sdk.addPlayerSDK().then(() => {
+      console.log('adding sdk')
+      this.playing = false;
+    });
+    this.sdk.isReady().subscribe((ready) => {
       if(ready){
         this.spotify_api.transferPlayback();
       }
     })
-  }
-
-  async ngOnInit(): Promise<void> { 
-    this.playing = false;
-    await this.sdk.addPlayerSDK();
-  
   }
 
   public play(){

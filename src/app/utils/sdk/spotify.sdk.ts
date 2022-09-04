@@ -4,17 +4,17 @@ import { BehaviorSubject, Observable, distinctUntilChanged  } from 'rxjs';
 
 const LS_DEVICE_ID = 'spotify.sdk.device_id';
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SpotifyPlayerSDK {
 
   private player: Spotify.Player;
-  private state: Spotify.PlaybackState;
+  private state: BehaviorSubject<Spotify.PlaybackState | null> = new BehaviorSubject<Spotify.PlaybackState | null>(null);
   public ready: BehaviorSubject<Boolean> = new BehaviorSubject<Boolean>(false);
 
   constructor() {}
   
-  public async addPlayerSDK(): Promise<void> {
+  public addPlayerSDK(): Promise<void> {
     return new Promise(() => {
 
       const script = document.createElement('script');
@@ -47,15 +47,7 @@ export class SpotifyPlayerSDK {
 
         this.player.addListener('player_state_changed', (state) => {
           console.log(state);
-          if (
-            this.state &&
-            state.track_window.previous_tracks.find((x) => x.id === state.track_window.current_track.id) &&
-            !this.state.paused &&
-            state.paused
-          ) {
-            console.log('Track ended');
-          }
-          this.state = state;
+          this.state.next(state);
         });
 
         this.player.addListener('initialization_error', ({ message }) => { 
@@ -100,10 +92,10 @@ export class SpotifyPlayerSDK {
     this.player.previousTrack();
   }
 
-  public getVolume(){
-    this.player.getVolume().then((volume: number) => {
-      let volume_percentage = volume * 100;
-      console.log(`The volume of the player is ${volume_percentage}%`);
+  public getVolume(): Promise<number>{
+    return this.player.getVolume().then((result) => {
+      console.log(result);
+      return Promise.resolve(result);
     });
   }
 

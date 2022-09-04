@@ -18,6 +18,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatSliderModule } from '@angular/material/slider'; 
 
 import { SpotifyPlayerComponent } from './services/spotify_service/spotify-player/spotify-player.component';
+import { VolumeSliderComponent } from './components/volume-slider/volume-slider.component';
+import { SpotifyPlayerSDK } from './utils/sdk/spotify.sdk';
 
 
 
@@ -30,6 +32,7 @@ import { SpotifyPlayerComponent } from './services/spotify_service/spotify-playe
     HomeComponent,
     TaskbarComponent,
     SpotifyPlayerComponent,
+    VolumeSliderComponent,
   ],
   imports: [
     BrowserModule,
@@ -46,7 +49,8 @@ import { SpotifyPlayerComponent } from './services/spotify_service/spotify-playe
   providers: [
       AuthService,
       { provide: Requestor, useValue: new FetchRequestor()},
-      SpotifyPlayerComponent
+      SpotifyPlayerComponent,
+      SpotifyPlayerSDK
   ],
   bootstrap: [AppComponent]
 })
