@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { UserInfo } from 'src/app/model/user_info';
-import { AuthService } from 'src/app/services/auth/auth.service';
-import { SpotifyApiService } from 'src/app/services/spotify_service/spotify-api/spotify-api.service';
-import { SpotifyPlayerComponent } from 'src/app/services/spotify_service/spotify-player/spotify-player.component';
-import { SpotifyPlayerSDK } from 'src/app/utils/sdk/spotify.sdk';
+import { AuthService } from '../../services/auth/auth.service';
+import { SpotifyApiService } from '../../services/spotify_service/spotify-api/spotify-api.service';
+import { SpotifyPlayerComponent } from '../../services/spotify_service/spotify-player/spotify-player.component';
 
 @Component({
   selector: 'app-home',

@@ -1,4 +1,4 @@
-window.Buffer = window.Buffer || require('buffer').Buffer;
+import { Buffer } from 'buffer/';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Token } from '@angular/compiler';
 import { Injectable } from '@angular/core';
@@ -24,7 +24,7 @@ const AUTH_SCOPE = '&scope=user-read-private%20user-read-email%20user-read-playb
 export class AuthService {
   
   private _tokenResponses: BehaviorSubject<BearerToken | null> = new BehaviorSubject<BearerToken | null>(null);
-  private _authorised: BehaviorSubject<Boolean | null> = new BehaviorSubject<Boolean | null >(false);
+  private _authorised: BehaviorSubject<Boolean > = new BehaviorSubject<Boolean>(false);
 
   constructor(private http: HttpClient, public router: Router) {
     this._tokenResponses.subscribe((token: BearerToken | null) => {
@@ -86,7 +86,7 @@ export class AuthService {
     return headers;
   }
 
-  public authorised(): Observable<Boolean | null> {
+  public authorised(): Observable<Boolean> {
     let authorised = JSON.parse(window.localStorage.getItem('auth.service.auth_status')!);
   
     if(authorised){
