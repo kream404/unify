@@ -16,6 +16,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatSliderModule } from '@angular/material/slider'; 
+
 import { SpotifyPlayerComponent } from './services/spotify_service/spotify-player/spotify-player.component';
 
 
@@ -28,7 +29,7 @@ import { SpotifyPlayerComponent } from './services/spotify_service/spotify-playe
     CallbackComponent,
     HomeComponent,
     TaskbarComponent,
-    SpotifyPlayerComponent
+    SpotifyPlayerComponent,
   ],
   imports: [
     BrowserModule,

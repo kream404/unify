@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/services/auth/auth.service';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-taskbar',
@@ -8,13 +8,13 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 })
 export class TaskbarComponent implements OnInit {
   
-  authorised: Boolean | null | undefined;
+  authorised: Boolean;
   
 
   constructor(public auth: AuthService) {}
 
   ngOnInit(): void {
-    this.auth.authorised().subscribe((auth: Boolean | null) => {
+    this.auth.authorised().subscribe((auth: Boolean) => {
         this.authorised = auth;
       });
   }

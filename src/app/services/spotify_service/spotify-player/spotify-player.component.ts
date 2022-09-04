@@ -1,6 +1,6 @@
 import { ThisReceiver } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
-import { SpotifyPlayerSDK } from 'src/app/utils/sdk/spotify.sdk';
+import { SpotifyPlayerSDK } from '../../../utils/sdk/spotify.sdk';
 import { SpotifyApiService } from '../spotify-api/spotify-api.service';
 
 @Component({
