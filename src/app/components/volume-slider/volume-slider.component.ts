@@ -1,4 +1,5 @@
 import { Component, Injector, OnInit } from '@angular/core';
+import { MatSliderChange } from '@angular/material/slider';
 import { SpotifyApiService } from 'src/app/services/spotify_service/spotify-api/spotify-api.service';
 import { SpotifyPlayerSDK } from 'src/app/utils/sdk/spotify.sdk';
 
@@ -25,5 +26,11 @@ export class VolumeSliderComponent implements OnInit {
         }));
       }
    })
+  }
+
+  onVolumeChange(event: MatSliderChange) {
+    if(event){
+      this.sdk.setVolume(event.value!/100);
+    }
   }
 }

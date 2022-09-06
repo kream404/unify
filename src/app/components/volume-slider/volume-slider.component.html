@@ -1,3 +1,1 @@
-<!-- <div id="container"> -->
-    <mat-slider min="1" max="100" step="1" [value]=_volume>Volume</mat-slider>
-<!-- </div> -->
+<mat-slider min="0" max="100" step="1" [value]=_volume (input)="onVolumeChange($event)">Volume</mat-slider>
