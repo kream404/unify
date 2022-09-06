@@ -1,4 +1,4 @@
-#volume_controls{
-    margin-right: 10px;
-    margin-left: 70%;
-}
+mat-slider {
+    width: 100px;
+    margin-left: 1350px;
+  }

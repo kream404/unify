@@ -20,9 +20,22 @@ html, body {
     color: #FFFFFF
 }
 
-  .mat-raised-button{
+.mat-raised-button{
     background-color: #424242;
     color: whitesmoke;
+}
+
+.mat-accent .mat-slider-track-fill {
+    background-color: whitesmoke !important;
+}
+
+.mat-slider-thumb-label {
+    background-color: whitesmoke !important;
+
+}
+
+.mat-slider-thumb {
+    background-color: whitesmoke !important;
 }
 
 

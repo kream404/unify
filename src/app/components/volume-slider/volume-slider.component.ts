@@ -9,8 +9,9 @@ import { SpotifyPlayerSDK } from 'src/app/utils/sdk/spotify.sdk';
 })
 export class VolumeSliderComponent implements OnInit {
 
-  _volume: number;
+  _volume: string;
   sdk: SpotifyPlayerSDK
+
   constructor(public injector: Injector) {
     this.sdk = this.injector.get(SpotifyPlayerSDK);
   }
@@ -19,7 +20,8 @@ export class VolumeSliderComponent implements OnInit {
     this.sdk.isReady().subscribe(async (ready) => {
       if(ready){
           await this.sdk.getVolume().then((volume =>{
-          this._volume = volume * 100;
+            this._volume =  (volume * 100).toString();
+            console.log('as a string vol : ' + this._volume) 
         }));
       }
    })
