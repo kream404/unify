@@ -21,14 +21,13 @@ export class SpotifyPlayerComponent implements OnInit {
 
   async ngOnInit(): Promise<void> { 
     this.sdk.addPlayerSDK().then(() => {
-      console.log('adding sdk')
       this.playing = false;
     });
     this.sdk.isReady().subscribe((ready) => {
       if(ready){
         this.spotify_api.transferPlayback();
       }
-    })
+    });
   }
 
   public play(){
@@ -47,10 +46,6 @@ export class SpotifyPlayerComponent implements OnInit {
 
   public previous(){
     this.sdk.previous();
-  }
-
-  public playerState(){
-    this.sdk.playerState();
   }
 
   public getVolume(){

@@ -20,6 +20,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { SpotifyPlayerComponent } from './services/spotify_service/spotify-player/spotify-player.component';
 import { VolumeSliderComponent } from './components/volume-slider/volume-slider.component';
 import { SpotifyPlayerSDK } from './utils/sdk/spotify.sdk';
+import { TimebarComponent } from './components/timebar/timebar.component';
 
 
 
@@ -33,6 +34,7 @@ import { SpotifyPlayerSDK } from './utils/sdk/spotify.sdk';
     TaskbarComponent,
     SpotifyPlayerComponent,
     VolumeSliderComponent,
+    TimebarComponent,
   ],
   imports: [
     BrowserModule,

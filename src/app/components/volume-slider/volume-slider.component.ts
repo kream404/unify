@@ -22,7 +22,6 @@ export class VolumeSliderComponent implements OnInit {
       if(ready){
           await this.sdk.getVolume().then((volume =>{
             this._volume =  (volume * 100).toString();
-            console.log('as a string vol : ' + this._volume) 
         }));
       }
    })
