@@ -1,20 +1,33 @@
 ///  <reference types="@types/spotify-web-playback-sdk"/>
 import { Injectable, NgZone, OnInit } from "@angular/core";
-import { BehaviorSubject, Observable, distinctUntilChanged  } from 'rxjs';
+import { BehaviorSubject, Observable, distinctUntilChanged, from, interval, timer  } from 'rxjs';
 
 const LS_DEVICE_ID = 'spotify.sdk.device_id';
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SpotifyPlayerSDK {
 
   private player: Spotify.Player;
-  private state: Spotify.PlaybackState;
+  private _state: BehaviorSubject<any>  = new BehaviorSubject<any>(null);
   public ready: BehaviorSubject<Boolean> = new BehaviorSubject<Boolean>(false);
+  public playing: BehaviorSubject<Boolean> = new BehaviorSubject<Boolean>(false);
+  public timer: any;
 
-  constructor() {}
+  constructor() {
+    this.playing.subscribe((play) => {
+      if(play){
+        console.log('emitting state');
+        this.timer = interval(1).subscribe(x => {
+          this.monitorPlayerState();
+      })
+      }else{
+        this.timer.unsubscribe()
+      }
+    })
+  }
   
-  public async addPlayerSDK(): Promise<void> {
+  public addPlayerSDK(): Promise<void> {
     return new Promise(() => {
 
       const script = document.createElement('script');
@@ -28,7 +41,6 @@ export class SpotifyPlayerSDK {
 
     window.onSpotifyWebPlaybackSDKReady = (() => {
         console.log('The Web Playback SDK is ready. We have access to Spotify.Player');
-        // console.log(window.Spotify.Player);
         this.player = new Spotify.Player({
           name: 'unify',
           volume: 0.5,
@@ -46,16 +58,7 @@ export class SpotifyPlayerSDK {
         });
 
         this.player.addListener('player_state_changed', (state) => {
-          console.log(state);
-          if (
-            this.state &&
-            state.track_window.previous_tracks.find((x) => x.id === state.track_window.current_track.id) &&
-            !this.state.paused &&
-            state.paused
-          ) {
-            console.log('Track ended');
-          }
-          this.state = state;
+          this._state.next(state);
         });
 
         this.player.addListener('initialization_error', ({ message }) => { 
@@ -77,18 +80,18 @@ export class SpotifyPlayerSDK {
     });
   }
   
-  // has to be 'connected' via spotify app - need to make this automatic
-  public playerState(){
-      this.player.getCurrentState().then((state) => {
-        console.log(state);
-      });
+  public monitorPlayerState(){
+    this.player.getCurrentState().then((state) => {
+      this._state.next(state!);
+    });
   }
-
   public resume(){
+    this.playing.next(true);
     this.player.resume();
   }
 
   public pause(){
+    this.playing.next(false);
     this.player.pause();
   }
 
@@ -100,10 +103,9 @@ export class SpotifyPlayerSDK {
     this.player.previousTrack();
   }
 
-  public getVolume(){
-    this.player.getVolume().then((volume: number) => {
-      let volume_percentage = volume * 100;
-      console.log(`The volume of the player is ${volume_percentage}%`);
+  public getVolume(): Promise<number>{
+    return this.player.getVolume().then((result) => {
+      return Promise.resolve(result);
     });
   }
 
@@ -113,8 +115,21 @@ export class SpotifyPlayerSDK {
     });
   }
 
+  public seek(pos: number){
+    this.player.seek(pos).then(() => {
+      console.log(`The position of the player is ` + this.getVolume());
+    });
+  }
+
   public isReady(): Observable<Boolean> {
-    console.log(this.ready.asObservable().pipe(distinctUntilChanged()));
     return this.ready.asObservable().pipe(distinctUntilChanged());
+  }
+
+  public isPlaying(): Observable<Boolean> {
+    return this.playing.asObservable().pipe(distinctUntilChanged());
+  }
+
+  public state(): Observable<Spotify.PlaybackState> {
+    return this._state.asObservable().pipe(distinctUntilChanged());
   }
 }
