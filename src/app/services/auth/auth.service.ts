@@ -30,6 +30,7 @@ export class AuthService {
     this._tokenResponses.subscribe((token: BearerToken | null) => {
       if(token) {
         window.localStorage.setItem(LS_TOKEN_RESPONSE, JSON.stringify(token));
+        console.log(token);
         window.localStorage.setItem(LS_AUTH_STATUS, JSON.stringify('true'))
         this._authorised.next(true);
       }

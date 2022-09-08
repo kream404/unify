@@ -29,7 +29,7 @@ export class SpotifyApiService {
     });
   }
 
-  // transfer playback to new player instance
+  // transfer playback to new player instance - flaky - defs need revisit
   public async transferPlayback(): Promise<void> {
     let device_id = window.localStorage.getItem('spotify.sdk.device_id');
     console.log('id from api ' + device_id)
@@ -43,11 +43,28 @@ export class SpotifyApiService {
     return new Promise((resolve, reject) => {
     let headers = this.createRequestHeader();
     this.http.put(URL + "/me/player", request, {headers: headers,}).pipe(retry(5), delay(10000)).subscribe((data: any) => {
-      return resolve(data);
-    });
-      return null;
-    });
+      if(data.code == 404 || data.code == 400){
+        console.log(data);
+      }if(data.code == 200){
+        return resolve(data)
+      }
+      });
+    })
   }
+
+  getDevices(): Promise<void> {
+    let headers = this.createRequestHeader();
+
+    return new Promise((resolve, reject) => {
+    this.http.get(URL + "/me/player/devices", {headers: headers,}).pipe(retry(5), delay(10000)).subscribe((data: any) => {
+      if(data.code == 404 || data.code == 400){
+        console.log(data);
+      }if(data.code == 200){
+        return resolve(data)
+      }
+      });
+    })
+}
 
   createRequestHeader(): HttpHeaders {
     this.access_token = this.auth.bearerToken();
