@@ -18,11 +18,9 @@ export class SpotifyPlayerSDK {
     this.playing.subscribe((play) => {
       if(play){
         console.log('emitting state');
-        this.timer = interval(1).subscribe(x => {
+        this.timer = interval(100).subscribe(x => {
           this.monitorPlayerState();
       })
-      }else{
-        this.timer.unsubscribe()
       }
     })
   }
@@ -51,9 +49,10 @@ export class SpotifyPlayerSDK {
         });
 
         // Ready
-        this.player.on('ready', (data) => {
+        this.player.on('ready', async (data) => {
           console.log('Ready with Device ID', data.device_id);
           window.localStorage.setItem(LS_DEVICE_ID, data.device_id);
+          await this.delay(5000);
           this.ready.next(true);
         });
 
@@ -132,4 +131,8 @@ export class SpotifyPlayerSDK {
   public state(): Observable<Spotify.PlaybackState> {
     return this._state.asObservable().pipe(distinctUntilChanged());
   }
+
+  public delay(ms: number) {
+    return new Promise( resolve => setTimeout(resolve, ms) );
+}
 }

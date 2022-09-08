@@ -23,7 +23,6 @@ export class TimebarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    //TODO: not working correctly, need to revist 
     this.sdk.isPlaying().subscribe((playing) => {
       if(playing){
       }
