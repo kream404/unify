@@ -1,30 +1,28 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { AuthService } from '../../services/auth/auth.service';
-import { SpotifyPlayerComponent } from '../../services/spotify-service/spotify-player/spotify-player.component';
+import { AuthService } from '../../auth/auth.service';
+import { SpotifyPlayerComponent } from './spotify-player.component';
 
-import { HomeComponent } from './home.component';
-
-describe('HomeComponent', () => {
-  let component: HomeComponent;
-  let fixture: ComponentFixture<HomeComponent>;
+describe('SpotifyPlayerComponent', () => {
+  let component: SpotifyPlayerComponent;
+  let fixture: ComponentFixture<SpotifyPlayerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
         RouterTestingModule.withRoutes([]),
+
       ],
-      providers:[
-        SpotifyPlayerComponent,
+      providers: [
         AuthService
       ],
-      declarations: [ HomeComponent ]
+      declarations: [ SpotifyPlayerComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(HomeComponent);
+    fixture = TestBed.createComponent(SpotifyPlayerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

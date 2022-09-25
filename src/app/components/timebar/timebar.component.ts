@@ -1,7 +1,7 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { MatSliderChange } from '@angular/material/slider';
 import { Observable } from 'rxjs';
-import { SpotifyPlayerSDK } from '../../utils/sdk/spotify.sdk';
+import { SpotifyPlayerSDK } from '../../utils/spotify-sdk/spotify.sdk';
 
 @Component({
   selector: 'app-timebar',
@@ -11,7 +11,7 @@ import { SpotifyPlayerSDK } from '../../utils/sdk/spotify.sdk';
 export class TimebarComponent implements OnInit {
 
   _time: string; //ms
-  sdk: SpotifyPlayerSDK
+  sdk: SpotifyPlayerSDK;
   position: number;
   duration: number;
   paused: boolean;

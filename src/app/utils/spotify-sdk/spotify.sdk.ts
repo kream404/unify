@@ -1,6 +1,7 @@
 ///  <reference types="@types/spotify-web-playback-sdk"/>
 import { Injectable, NgZone, OnInit } from "@angular/core";
 import { BehaviorSubject, Observable, distinctUntilChanged, from, interval, timer  } from 'rxjs';
+import { HelperUtils } from "../helper-utils";
 
 const LS_DEVICE_ID = 'spotify.sdk.device_id';
 @Injectable({
@@ -10,6 +11,8 @@ export class SpotifyPlayerSDK {
 
   private player: Spotify.Player;
   private _state: BehaviorSubject<any>  = new BehaviorSubject<any>(null);
+  private _track: BehaviorSubject<any>  = new BehaviorSubject<any>(null);
+
   public ready: BehaviorSubject<Boolean> = new BehaviorSubject<Boolean>(false);
   public playing: BehaviorSubject<Boolean> = new BehaviorSubject<Boolean>(false);
   public timer: any;
@@ -52,12 +55,14 @@ export class SpotifyPlayerSDK {
         this.player.on('ready', async (data) => {
           console.log('Ready with Device ID', data.device_id);
           window.localStorage.setItem(LS_DEVICE_ID, data.device_id);
-          await this.delay(5000);
+          HelperUtils.delay(5000);
           this.ready.next(true);
         });
 
         this.player.addListener('player_state_changed', (state) => {
+
           this._state.next(state);
+          this._track.next(state.track_window);
         });
 
         this.player.addListener('initialization_error', ({ message }) => { 
@@ -130,6 +135,10 @@ export class SpotifyPlayerSDK {
 
   public state(): Observable<Spotify.PlaybackState> {
     return this._state.asObservable().pipe(distinctUntilChanged());
+  }
+
+  public track(): Observable<any> {
+    return this._track.asObservable().pipe(distinctUntilChanged());
   }
 
   public delay(ms: number) {

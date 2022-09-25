@@ -1,7 +1,7 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { MatSliderChange } from '@angular/material/slider';
-import { SpotifyApiService } from 'src/app/services/spotify_service/spotify-api/spotify-api.service';
-import { SpotifyPlayerSDK } from 'src/app/utils/sdk/spotify.sdk';
+import { SpotifyApiService } from 'src/app/services/spotify-service/spotify-api/spotify-api.service';
+import { SpotifyPlayerSDK } from 'src/app/utils/spotify-sdk/spotify.sdk';
 
 @Component({
   selector: 'app-volume-slider',
