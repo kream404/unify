@@ -17,10 +17,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatSliderModule } from '@angular/material/slider'; 
 
-import { SpotifyPlayerComponent } from './services/spotify_service/spotify-player/spotify-player.component';
+import { SpotifyPlayerComponent } from './services/spotify-service/spotify-player/spotify-player.component';
 import { VolumeSliderComponent } from './components/volume-slider/volume-slider.component';
-import { SpotifyPlayerSDK } from './utils/sdk/spotify.sdk';
+import { SpotifyPlayerSDK } from './utils/spotify-sdk/spotify.sdk';
 import { TimebarComponent } from './components/timebar/timebar.component';
+import { PlayerCardComponent } from './components/player-card/player-card.component';
+import { YoutubeServiceComponent } from './services/youtube-service/youtube-service.component';
 
 
 
@@ -35,6 +37,8 @@ import { TimebarComponent } from './components/timebar/timebar.component';
     SpotifyPlayerComponent,
     VolumeSliderComponent,
     TimebarComponent,
+    PlayerCardComponent,
+    YoutubeServiceComponent,
   ],
   imports: [
     BrowserModule,

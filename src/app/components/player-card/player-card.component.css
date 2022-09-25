@@ -1,0 +1,37 @@
+#track_container{
+    /* border: solid;
+    border-color:black;
+    border-width: 5px; */
+    color: white;
+    width: 2000px;
+    height: 40%;
+    margin: 0 auto 0 400px;
+    margin-top: 100px;
+    width: 40%;
+}
+
+#card{
+    height: 300px;
+    
+}
+
+button{
+    margin-left: 10px;
+}
+
+.mat-card{
+    background: #673ab7;
+    width: 120%;
+
+}
+
+#track_info{
+    display: inline-block;
+    margin-left: 10px;
+    margin: 0 auto 0 10px;
+
+}
+
+#image{
+    display: inline-block;
+}

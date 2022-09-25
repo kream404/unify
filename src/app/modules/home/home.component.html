@@ -1,5 +1,8 @@
 <div id = "container">
     <h1 id="greeting" *ngIf="user"> Hello {{ user.display_name }}</h1>
+    <div id="track_info">
+        <app-player-card></app-player-card>
+    </div>
     <div id="player">
         <spotify-player ></spotify-player>
     </div>
